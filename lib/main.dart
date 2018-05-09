@@ -156,46 +156,34 @@ class _CalculatorState extends State<CalculatorPage> {
     }
 
     // Builds Top Container to hold total, tip, per person, and bill ammount
-    Column buildTopContent() {
-      return new Column(
+    Row buildTopContent() {
+      return new Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              // Column for Bill Ammount
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                 
-                ],
-              ),
+          // Column for Bill Ammount
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[],
+          ),
 
-              // Column for Tip Ammount
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  
-                ],
-              ),
+          // Column for Tip Ammount
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[],
+          ),
 
-              // Column for Total Ammount
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  
-                ],
-              ),
+          // Column for Total Ammount
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[],
+          ),
 
-              // Column for Amount per person
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  
-                ],
-              ),
-            ],
-          )
+          // Column for Amount per person
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[],
+          ),
         ],
       );
     }
@@ -213,7 +201,7 @@ class _CalculatorState extends State<CalculatorPage> {
     // Creates a raised button but can also use flat buttons depending on style desired
     Container buildCalculatorButton(Object buttonText) {
       return new Container(
-        // Conditional to determine style of button
+          // Conditional to determine style of button
           child: buttonText is String
               ? // Case when text for a button is a number 0-9
               new RaisedButton(
