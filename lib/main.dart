@@ -31,7 +31,7 @@ class TipCalculator extends StatelessWidget {
             inactiveTrackColor: Colors.grey,
             inactiveTickMarkColor: Colors.grey),
       ),
-      home: new CalculatorPage(title: ''),
+      home: new CalculatorPage(title: 'Split the Bill!'),
     );
   }
 }
@@ -126,8 +126,13 @@ class _CalculatorState extends State<CalculatorPage> {
           new Container(
             margin: new EdgeInsets.only(top: 35.0, bottom: 25.0),
             child: new Slider(
-              value: 0.0,
-              label: "",
+              key: new Key("FriendsSlider"),
+              value: friends,
+              max: 10.0,
+              min: 0.0,
+              divisions: 10,
+              onChanged: (double value) => sliderUpdated(value),
+              label: friends == 0 ? "Just me!" : "$friends friend(s)!",
             ),
           )
         ],
@@ -136,7 +141,23 @@ class _CalculatorState extends State<CalculatorPage> {
 
     // Builds the button to select tip percentage
     Widget buildTipButton(String pct) {
-      return new MaterialButton();
+      return new MaterialButton(
+        color: tipButtonCollor(pct),
+        child: new Text(
+          "$pct%",
+          style: new TextStyle(
+            fontWeight: tipSelected(pct) ? FontWeight.bold : FontWeight.normal,
+          ),
+        ),
+        onPressed: () {
+          setState(() {
+            if (tip != double.parse(pct))
+              tip = double.parse(pct);
+            else
+              tip = 0.0;
+          });
+        },
+      );
     }
 
     // Builds the row containing tip buttons
@@ -164,18 +185,42 @@ class _CalculatorState extends State<CalculatorPage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               // Column for Bill Ammount
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                 
-                ],
+              new Container(
+                child: new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    new Text(
+                      "BILL \$",
+                      style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                      textAlign: TextAlign.start,
+                    ),
+                    new Text(
+                      numFormat.format(billAmount()),
+                      style: new TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
 
               // Column for Tip Ammount
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  
+                  new Text(
+                    "TIP \$",
+                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                    textAlign: TextAlign.start,
+                  ),
+                  new Text(
+                    numFormat.format(tipAmount()),
+                    style: new TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
 
@@ -183,7 +228,18 @@ class _CalculatorState extends State<CalculatorPage> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  
+                  new Text(
+                    "TOTAL \$",
+                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                    textAlign: TextAlign.start,
+                  ),
+                  new Text(
+                    numFormat.format(totalAmount()),
+                    style: new TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
 
@@ -191,7 +247,18 @@ class _CalculatorState extends State<CalculatorPage> {
               new Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  
+                  new Text(
+                    "Per/Person \$",
+                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                    textAlign: TextAlign.start,
+                  ),
+                  new Text(
+                    numFormat.format(amountPerPerson),
+                    style: new TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ],
@@ -206,6 +273,7 @@ class _CalculatorState extends State<CalculatorPage> {
       return new Container(
           margin: new EdgeInsets.only(top: 10.0),
           padding: new EdgeInsets.symmetric(vertical: 35.0, horizontal: 15.0),
+          color: Colors.black,
           child: buildTopContent());
     }
 
@@ -213,10 +281,14 @@ class _CalculatorState extends State<CalculatorPage> {
     // Creates a raised button but can also use flat buttons depending on style desired
     Container buildCalculatorButton(Object buttonText) {
       return new Container(
-        // Conditional to determine style of button
+          // Conditional to determine style of button
           child: buttonText is String
               ? // Case when text for a button is a number 0-9
               new RaisedButton(
+                  key: new Key(buttonText),
+                  onPressed: () => setState(() {
+                        addNumberToBill(int.parse(buttonText));
+                      }),
                   child: new Text(
                     buttonText,
                     style: new TextStyle(
@@ -225,6 +297,11 @@ class _CalculatorState extends State<CalculatorPage> {
                 )
               : // Case when text for a button is an icon
               new RaisedButton(
+                  onPressed: calcNumber.queueToString() != "000"
+                      ? () => setState(() {
+                            addNumberToBill(buttonText);
+                          })
+                      : null,
                   child: new Icon(buttonText,
                       size: 20.0,
                       color: calcNumber.queueToString() != "000"

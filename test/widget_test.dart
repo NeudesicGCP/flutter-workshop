@@ -10,11 +10,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:tip_calc/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Tip Calculator smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(new TipCalculator());
 
-    // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsOneWidget);
     expect(find.text('2'), findsOneWidget);
@@ -26,12 +25,33 @@ void main() {
     expect(find.text('8'), findsOneWidget);
     expect(find.text('9'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.text('15%'), findsOneWidget);
+    expect(find.text('18%'), findsOneWidget);
+    expect(find.text('20%'), findsOneWidget);
+    expect(find.text('25%'), findsOneWidget);
+
+    expect(find.text("0.00"), findsNWidgets(4));
+
+    await tester.tap(find.byKey(new Key("1")));
+    await tester.tap(find.byKey(new Key("2")));
+    await tester.tap(find.byKey(new Key("3")));
+    await tester.tap(find.byKey(new Key("4")));
+    await tester.tap(find.byKey(new Key("5")));
+    await tester.tap(find.byKey(new Key("6")));
+    await tester.tap(find.byKey(new Key("7")));
+    await tester.tap(find.byKey(new Key("8")));
+    await tester.tap(find.byKey(new Key("9")));
+    await tester.tap(find.byKey(new Key("0")));
+    await tester.tap(find.byIcon(Icons.backspace));
+    await tester.tap(find.byIcon(Icons.cancel));
+
+    await tester.drag(find.byKey(new Key("FriendsSlider")), new Offset(100.0, 0.0));
+    await tester.drag(find.byKey(new Key("FriendsSlider")), new Offset(200.0, 0.0));
+    await tester.drag(find.byKey(new Key("FriendsSlider")), new Offset(300.0, 0.0));
+
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.
+
   });
 }
