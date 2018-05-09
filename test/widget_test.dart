@@ -51,7 +51,5 @@ void main() {
 
     await tester.pump();
 
-    await tester.
-
   });
 }
