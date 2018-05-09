@@ -61,6 +61,7 @@ class _CalculatorState extends State<CalculatorPage> {
   double tip = 0.0;
   double friends = 0.0;
   double amountPerPerson = 0.0;
+  BuildContext _context;
 
   double billAmount() {
     var temp = calcNumber.queueToString();
@@ -94,7 +95,28 @@ class _CalculatorState extends State<CalculatorPage> {
 
   void addNumberToBill(Object number) {
     if (calcNumber.queue.length + 1 >= 7 && number is int) {
-      // Good place to add a dialog to explain why its not entering
+      var dialog = new SimpleDialog(
+        title: new Text(
+          "Too many digits",
+          textAlign: TextAlign.center,
+        ),
+        children: <Widget>[
+          new Text(
+            "Only 6 digits currently supported",
+            textAlign: TextAlign.center,
+          ),
+          new Padding(
+            padding: new EdgeInsets.all(5.0),
+            child: new RaisedButton(
+              child: new Text("Okay"),
+              onPressed: () {
+                Navigator.pop(_context);
+              },
+            ),
+          ),
+        ],
+      );
+      showDialog(context: _context, child: dialog);
       return;
     }
     if (number is int) {
@@ -119,6 +141,7 @@ class _CalculatorState extends State<CalculatorPage> {
 
   @override
   Widget build(BuildContext context) {
+    _context = context;
     // Builds the slider for splitting the check
     Stack buildSlider() {
       return new Stack(
@@ -141,15 +164,8 @@ class _CalculatorState extends State<CalculatorPage> {
 
     // Builds the button to select tip percentage
     Widget buildTipButton(String pct) {
-      return new MaterialButton(
-        color: tipButtonCollor(pct),
-        child: new Text(
-          "$pct%",
-          style: new TextStyle(
-            fontWeight: tipSelected(pct) ? FontWeight.bold : FontWeight.normal,
-          ),
-        ),
-        onPressed: () {
+      return new GestureDetector(
+        onTap: () {
           setState(() {
             if (tip != double.parse(pct))
               tip = double.parse(pct);
@@ -157,6 +173,43 @@ class _CalculatorState extends State<CalculatorPage> {
               tip = 0.0;
           });
         },
+        child: new Stack(
+          alignment: const Alignment(1.0, -1.0),
+          children: <Widget>[
+            new Container(
+              child: new Text(
+                "$pct%",
+                style: new TextStyle(
+                  color: tipButtonCollor(pct),
+                  fontWeight:
+                      tipSelected(pct) ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+              padding:
+                  new EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              decoration: new BoxDecoration(
+                border: new Border.all(color: tipButtonCollor(pct)),
+                borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
+              ),
+            ),
+            new Container(
+              decoration: new BoxDecoration(
+                color: tipSelected(pct) ? Colors.green : Colors.transparent,
+                borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
+              ),
+              child: new Align(
+                child: new Padding(
+                  padding: new EdgeInsets.all(1.0),
+                  child: new Icon(
+                    Icons.check,
+                    size: 13.0,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
       );
     }
 
@@ -273,7 +326,19 @@ class _CalculatorState extends State<CalculatorPage> {
       return new Container(
           margin: new EdgeInsets.only(top: 10.0),
           padding: new EdgeInsets.symmetric(vertical: 35.0, horizontal: 15.0),
-          color: Colors.black,
+          decoration: new BoxDecoration(
+            borderRadius: new BorderRadius.all(new Radius.circular(5.0)),
+            gradient: new LinearGradient(
+              begin: Alignment.bottomLeft,
+              end: new Alignment(
+                  0.1, -1.5), // 10% of the width, so there are ten blinds.
+              colors: result
+                  ? [Colors.greenAccent, Colors.green]
+                  : [Colors.black87, Colors.black],
+              tileMode:
+                  TileMode.repeated, // repeats the gradient over the canvas
+            ),
+          ),
           child: buildTopContent());
     }
 
@@ -359,25 +424,18 @@ class _CalculatorState extends State<CalculatorPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                // Top Container
                 new Padding(
                   padding: new EdgeInsets.all(10.0),
                   child: buildTopContainer(),
                 ),
-
-                // Slider for splitting the check
                 new Padding(
                   padding: new EdgeInsets.all(10.0),
                   child: buildSlider(),
                 ),
-
-                // Tip row for setting tip percentages
                 new Padding(
                   padding: new EdgeInsets.all(5.0),
                   child: buildTipRow(),
                 ),
-
-                // Builds rows of buttons for calculator
                 buildButtonRow(["1", "2", "3"]),
                 buildButtonRow(["4", "5", "6"]),
                 buildButtonRow(["7", "8", "9"]),
