@@ -177,92 +177,88 @@ class _CalculatorState extends State<CalculatorPage> {
     }
 
     // Builds Top Container to hold total, tip, per person, and bill ammount
-    Column buildTopContent() {
-      return new Column(
+    Row buildTopContent() {
+      return new Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          new Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              // Column for Bill Ammount
-              new Container(
-                child: new Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    new Text(
-                      "BILL \$",
-                      style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                      textAlign: TextAlign.start,
-                    ),
-                    new Text(
-                      numFormat.format(billAmount()),
-                      style: new TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
+          // Column for Bill Ammount
+          new Container(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  "BILL \$",
+                  style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                  textAlign: TextAlign.start,
                 ),
-              ),
+                new Text(
+                  numFormat.format(billAmount()),
+                  style: new TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
 
-              // Column for Tip Ammount
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    "TIP \$",
-                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                    textAlign: TextAlign.start,
-                  ),
-                  new Text(
-                    numFormat.format(tipAmount()),
-                    style: new TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
+          // Column for Tip Ammount
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Text(
+                "TIP \$",
+                style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                textAlign: TextAlign.start,
               ),
-
-              // Column for Total Ammount
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    "TOTAL \$",
-                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                    textAlign: TextAlign.start,
-                  ),
-                  new Text(
-                    numFormat.format(totalAmount()),
-                    style: new TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-
-              // Column for Amount per person
-              new Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  new Text(
-                    "Per/Person \$",
-                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                    textAlign: TextAlign.start,
-                  ),
-                  new Text(
-                    numFormat.format(amountPerPerson),
-                    style: new TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
+              new Text(
+                numFormat.format(tipAmount()),
+                style: new TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
               ),
             ],
-          )
+          ),
+
+          // Column for Total Ammount
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Text(
+                "TOTAL \$",
+                style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                textAlign: TextAlign.start,
+              ),
+              new Text(
+                numFormat.format(totalAmount()),
+                style: new TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+
+          // Column for Amount per person
+          new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              new Text(
+                "Per/Person \$",
+                style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                textAlign: TextAlign.start,
+              ),
+              new Text(
+                numFormat.format(amountPerPerson),
+                style: new TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ],
       );
     }
