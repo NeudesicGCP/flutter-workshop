@@ -76,12 +76,15 @@ class _CalculatorState extends State<CalculatorPage> {
   }
 
   void splitBill() {
+    setState((){
     var dollars = totalAmount().toString().split('.');
+    print(friends);
     amountPerPerson =
         friends != 0.0 ? (totalAmount() / (friends + 1)) : totalAmount();
     var round = dollars[1].length;
     if (round >= 2) amountPerPerson += .01;
     print(amountPerPerson);
+    });
   }
 
   bool tipSelected(String tipPct) {
@@ -107,14 +110,14 @@ class _CalculatorState extends State<CalculatorPage> {
         calcNumber.clearQueue();
       }
     }
-    if (friends > 0) splitBill();
+    splitBill();
   }
 
   void sliderUpdated(double value) {
     setState(() {
       friends = value;
     });
-    if (friends > 0) splitBill();
+    splitBill();
   }
 
   @override
@@ -156,10 +159,8 @@ class _CalculatorState extends State<CalculatorPage> {
     }
 
     // Builds Top Container to hold total, tip, per person, and bill ammount
-    Column buildTopContent() {
-      return new Column(
-        children: <Widget>[
-          new Row(
+    Row buildTopContent() {
+      return new Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -195,9 +196,7 @@ class _CalculatorState extends State<CalculatorPage> {
                 ],
               ),
             ],
-          )
-        ],
-      );
+          );
     }
 
     // Builds the top "Card". While there is a material design widget called card
