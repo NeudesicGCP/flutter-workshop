@@ -161,6 +161,9 @@ class _CalculatorState extends State<CalculatorPage> {
     // Builds Top Container to hold total, tip, per person, and bill ammount
     Row buildTopContent() {
       return new Row(
+        mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: <Widget>[
           // Column for Tip Ammount
           new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
