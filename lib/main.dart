@@ -76,14 +76,14 @@ class _CalculatorState extends State<CalculatorPage> {
   }
 
   void splitBill() {
-    setState((){
-    var dollars = totalAmount().toString().split('.');
-    print(friends);
-    amountPerPerson =
-        friends != 0.0 ? (totalAmount() / (friends + 1)) : totalAmount();
-    var round = dollars[1].length;
-    if (round >= 2) amountPerPerson += .01;
-    print(amountPerPerson);
+    setState(() {
+      var dollars = totalAmount().toString().split('.');
+      print(friends);
+      amountPerPerson =
+          friends != 0.0 ? (totalAmount() / (friends + 1)) : totalAmount();
+      var round = dollars[1].length;
+      if (round >= 2) amountPerPerson += .01;
+      print(amountPerPerson);
     });
   }
 
@@ -182,21 +182,41 @@ class _CalculatorState extends State<CalculatorPage> {
     // Builds Top Container to hold total, tip, per person, and bill ammount
     Row buildTopContent() {
       return new Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget>[
-          // Column for Bill Ammount
-          new Container(
-            child: new Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            // Column for Bill Ammount
+            new Container(
+              child: new Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  new Text(
+                    "BILL \$",
+                    style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                    textAlign: TextAlign.start,
+                  ),
+                  new Text(
+                    numFormat.format(billAmount()),
+                    style: new TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+
+            // Column for Tip Ammount
+            new Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Text(
-                  "BILL \$",
+                  "TIP \$",
                   style: new TextStyle(fontSize: 12.0, color: Colors.white),
                   textAlign: TextAlign.start,
                 ),
                 new Text(
-                  numFormat.format(billAmount()),
+                  numFormat.format(tipAmount()),
                   style: new TextStyle(
                       fontSize: 15.0,
                       color: Colors.white,
@@ -204,65 +224,45 @@ class _CalculatorState extends State<CalculatorPage> {
                 ),
               ],
             ),
-          ),
 
-          // Column for Tip Ammount
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(
-                "TIP \$",
-                style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                textAlign: TextAlign.start,
-              ),
-              new Text(
-                numFormat.format(tipAmount()),
-                style: new TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+            // Column for Total Ammount
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  "TOTAL \$",
+                  style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                  textAlign: TextAlign.start,
+                ),
+                new Text(
+                  numFormat.format(totalAmount()),
+                  style: new TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
 
-          // Column for Total Ammount
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(
-                "TOTAL \$",
-                style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                textAlign: TextAlign.start,
-              ),
-              new Text(
-                numFormat.format(totalAmount()),
-                style: new TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-
-          // Column for Amount per person
-          new Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              new Text(
-                "Per/Person \$",
-                style: new TextStyle(fontSize: 12.0, color: Colors.white),
-                textAlign: TextAlign.start,
-              ),
-              new Text(
-                numFormat.format(amountPerPerson),
-                style: new TextStyle(
-                    fontSize: 15.0,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-             
-          ),
-        ],
-      );
+            // Column for Amount per person
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                new Text(
+                  "Per/Person \$",
+                  style: new TextStyle(fontSize: 12.0, color: Colors.white),
+                  textAlign: TextAlign.start,
+                ),
+                new Text(
+                  numFormat.format(amountPerPerson),
+                  style: new TextStyle(
+                      fontSize: 15.0,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            )
+          ]);
     }
 
     // Builds the top "Card". While there is a material design widget called card
